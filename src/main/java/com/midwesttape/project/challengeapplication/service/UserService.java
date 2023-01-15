@@ -1,37 +1,49 @@
 package com.midwesttape.project.challengeapplication.service;
 
-import com.midwesttape.project.challengeapplication.model.User;
-import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
+import java.util.Optional;
+
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
+
+import com.midwesttape.project.challengeapplication.exception.UserNotFoundException;
+import com.midwesttape.project.challengeapplication.model.Address;
+import com.midwesttape.project.challengeapplication.model.User;
+import com.midwesttape.project.challengeapplication.model.UserDetails;
+import com.midwesttape.project.challengeapplication.repository.AddressRepository;
+import com.midwesttape.project.challengeapplication.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
-    private final JdbcTemplate template;
+	
+	@Resource
+    private AddressRepository addressRepository;
+	@Resource
+    private UserRepository userRepository;
 
-    public User user(final Long userId) {
-        try {
-
-            return template.queryForObject(
-                "select " +
-                    "id, " +
-                    "firstName, " +
-                    "lastName, " +
-                    "username, " +
-                    "password " +
-                    "from User " +
-                    "where id = ?",
-                new BeanPropertyRowMapper<>(User.class),
-                userId
-            );
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-
-    }
-
+	public Address getAddress(Long addressId) {
+		return addressRepository.findById(addressId).get();
+	}
+	
+	public UserDetails getUserDetails(Long userId) throws UserNotFoundException {
+		Optional<User> optionalUser = userRepository.findById(userId);
+		optionalUser.orElseThrow(() -> new UserNotFoundException("User Not found: " + userId));
+		User user = optionalUser.get();
+		return getUserDetails(user, user.getAddressid());
+	}
+	
+	public UserDetails getUserDetails(User user, Long id) {
+		UserDetails userDetails = new UserDetails();
+		return userDetails.setFirstname(user.getFirstname()).setLastname(user.getLastname())
+				.setPassword(user.getPassword()).setUsername(user.getUsername()).setId(user.getId())
+				.setAddress(getAddress(id));
+	}
+	
+	public void updateUser(User user) {
+		userRepository.save(user);
+	}
 }

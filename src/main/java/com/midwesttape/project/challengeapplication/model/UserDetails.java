@@ -1,22 +1,17 @@
 package com.midwesttape.project.challengeapplication.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-
 @Data
-@Entity
 @Accessors(chain = true)
-public class User {
+public class UserDetails {
 	
-	@Id
-    private Long id;
+	private Long id;
     private String firstname;
     private String lastname;
     private String username;
     private String password;
-    private Long addressid;
+    private Address address;
+
 }
