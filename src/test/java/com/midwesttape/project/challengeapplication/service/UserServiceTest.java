@@ -56,7 +56,7 @@ class UserServiceTest {
     
 	public User getUser() {
 		User user = new User();
-		return user.setId(USER_ID).setFirstname("Phil").setLastname("Ingwell").setUsername("PhilIngwell")
+		return user.setId(USER_ID).setFirstName("Phil").setLastName("Ingwell").setUsername("PhilIngwell")
 				.setPassword("Password123").setAddressid(ADDRESS_ID);
 	}
     
@@ -68,7 +68,7 @@ class UserServiceTest {
 
 	public UserDetails getUserDetails() {
 		UserDetails userDetails = new UserDetails();
-		return userDetails.setId(USER_ID).setFirstname("Phil").setLastname("Ingwell").setUsername("PhilIngwell")
+		return userDetails.setId(USER_ID).setFirstName("Phil").setLastName("Ingwell").setUsername("PhilIngwell")
 				.setPassword("Password123").setAddress(getAddress());
 	}
 }

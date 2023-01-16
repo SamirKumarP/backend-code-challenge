@@ -38,7 +38,7 @@ public class UserService {
 	
 	public UserDetails getUserDetails(User user, Long id) {
 		UserDetails userDetails = new UserDetails();
-		return userDetails.setFirstname(user.getFirstname()).setLastname(user.getLastname())
+		return userDetails.setFirstName(user.getFirstName()).setLastName(user.getLastName())
 				.setPassword(user.getPassword()).setUsername(user.getUsername()).setId(user.getId())
 				.setAddress(getAddress(id));
 	}
